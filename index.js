@@ -9,13 +9,14 @@ import dotenv from 'dotenv'
 import routeEtudiant from './routes/routeEtudiant.js'
 import routeNote from './routes/routeNote.js'
 
-const PORT = dotenv.config().parsed.PORT
+// const PORT = dotenv.config().parsed.PORT
 
+// console.log('process',process.env.PORT)
 //Import de la base de donnees
 import database from './connexion.js'
 import routerLogin from './routes/routeLogin.js'
 //Creation des tables
-database.sync()
+database.sync({ alter: true })
 
 const app = express()
 
@@ -27,13 +28,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // Utilisation des routes
 
-app.get('/bonjour', (red, res) => {
+app.get('/api/bonjour', (red, res) => {
     res.send("Bonjour tout le monde")
 })
 
-app.use('/etudiants', routeEtudiant)
-app.use('/notes', routeNote)
-app.use('/login', routerLogin)
+app.use('/api/etudiants', routeEtudiant)
+app.use('/api/notes', routeNote)
+app.use('/api/login', routerLogin)
 
 
-app.listen(PORT, () => console.log(`Listening on Port ${PORT}`))
+app.listen(process.env.PORT, () => console.log(`Listening on Port ${process.env.PORT}`))
